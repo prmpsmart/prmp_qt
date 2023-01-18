@@ -202,7 +202,7 @@ class FrameLessWindow(BaseWindow):
         lay = QHBoxLayout(self)
         lay.setContentsMargins(m, m, m, m)
 
-        self.__windowFrame = VFrame(parent=self, name="window_frame")
+        self.__windowFrame = VFrame(parent=self, objectName="window_frame")
         lay.addWidget(self.__windowFrame)
 
         vlayout = self.__windowFrame.layout()

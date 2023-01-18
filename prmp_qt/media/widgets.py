@@ -3,6 +3,7 @@ from .core import *
 if AUDIOWAVE:
     from audiolivewaveform import *
 
+
 class CameraWidget(ImageLabel):
     def __init__(
         self,
@@ -51,7 +52,7 @@ class CameraWidget(ImageLabel):
     def stop(self):
         self.camera.stop()
 
-    def closeEvent(self, event):
+    def closeEvent(self, event: QCloseEvent):
         if self.camera.isActive():
             self.camera.stop()
         event.accept()

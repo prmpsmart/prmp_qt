@@ -322,7 +322,9 @@ class RoundedPolygon(QPolygon):
         return poly.path()
 
 
-def ROUND_IMAGE(image: QImage, radius: int, rect: QRectF) -> QImage:
+def ROUND_IMAGE(image: Union[QImage, str], radius: int, rect: QRectF) -> QImage:
+    image = QImage(image)
+
     out_img = QImage(*image.size().toTuple(), QImage.Format_ARGB32)
     out_img.fill(Qt.transparent)
 
@@ -336,35 +338,35 @@ def ROUND_IMAGE(image: QImage, radius: int, rect: QRectF) -> QImage:
 
 def IMAGE(
     image_data: Union[str, int],
-    icon: str,
+    image: str,
     mask=0,
     scale: QSize = None,
     round: int = 0,
     rect: QRect = None,
 ) -> QPixmap:
-    image = None
+    _image = None
 
     if image_data:
         image_data = (
             B64_DECODE(image_data) if isinstance(image_data, str) else image_data
         )
-        image = QImage.fromData(image_data, "PNG") or QImage.fromData(
+        _image = QImage.fromData(image_data, "PNG") or QImage.fromData(
             image_data, "JPEG"
         )
 
     else:
-        image = QImage(icon)
+        _image = QImage(image)
 
     if scale:
-        image = image.scaled(scale, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        _image = _image.scaled(scale, Qt.KeepAspectRatio, Qt.SmoothTransformation)
 
     if round and rect:
-        image = ROUND_IMAGE(image, round, rect)
+        _image = ROUND_IMAGE(_image, round, rect)
 
     if mask:
-        image = MASK_IMAGE(image, mask)
-    
-    return image
+        _image = MASK_IMAGE(_image, mask)
+
+    return _image
 
 
 def PIXMAP(*args, **kwargs) -> QPixmap:

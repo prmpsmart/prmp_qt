@@ -3,10 +3,15 @@ from .commons import *
 
 class Scrollable(QScrollArea):
     def __init__(
-        self, widgetClass: QWidget = QFrame, widgetKwargs={}, hbar=0, vbar=1, name=""
+        self,
+        widgetClass: QWidget = QFrame,
+        widgetKwargs={},
+        hbar=0,
+        vbar=1,
+        objectName="",
     ):
         QScrollArea.__init__(self)
-        self.setObjectName(name)
+        self.setObjectName(objectName)
 
         self._widget: QWidget = widgetClass(**widgetKwargs)
 

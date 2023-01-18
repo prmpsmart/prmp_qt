@@ -10,5 +10,5 @@ class TitleRadio(QRadioButton):
         lay.setContentsMargins(40, 5, 5, 5)
         lay.setSpacing(5)
 
-        lay.addWidget(Label(text=title, name="bold"))
-        lay.addWidget(Label(text=label, name="title_radio_label"))
+        lay.addWidget(Label(text=title, objectName="bold"))
+        lay.addWidget(Label(text=label, objectName="title_radio_label"))

@@ -3,23 +3,23 @@ from .commons import *
 
 
 class Label(QLabel):
-    def __init__(self, text: str = "", name: str = "", parent: QWidget = None):
+    def __init__(self, text: str = "", objectName: str = "", parent: QWidget = None):
         super().__init__(text, parent)
 
-        if name:
-            self.setObjectName(name)
+        if objectName:
+            self.setObjectName(objectName)
 
 
 class ImageLabel(Label):
     def __init__(
         self,
         pixmap: QPixmap = None,
-        image: str = "",
-        name: str = "",
+        image: Union[QImage, str] = None,
+        objectName: str = "",
         default: str = "",
         radius: int = 0,
     ):
-        super().__init__(name=name)
+        super().__init__(objectName=objectName)
 
         self.radius = radius
         self.default = default
@@ -29,7 +29,10 @@ class ImageLabel(Label):
             self.setImage(pixmap, image)
 
     def setImage(
-        self, pixmap: QPixmap = None, image: QImage = None, image_data: str = ""
+        self,
+        pixmap: QPixmap = None,
+        image: Union[QImage, str] = None,
+        image_data: str = "",
     ):
 
         if image_data:
@@ -51,18 +54,18 @@ class IconLabel(Label, Icon):
         icon_size: int,
         parent: QWidget = None,
         border=True,
-        name: str = "",
+        objectName: str = "",
         color: Union[Qt.GlobalColor, QColor] = Qt.black,
         **kwargs,
     ):
-        Label.__init__(self, parent=parent, name=name)
+        Label.__init__(self, parent=parent, objectName=objectName)
         Icon.__init__(self, icon_size, border=border, **kwargs)
         self.setPixmap(QSvgPixmap(icon, color).scaled(self.icon_size, self.icon_size))
 
 
 class ColorfulTag(Label):
-    def __init__(self, text: str = "", name=""):
-        super().__init__(text=text, name=name)
+    def __init__(self, text: str = "", objectName=""):
+        super().__init__(text=text, objectName=objectName)
 
 
 class AlignLabel(Label):
@@ -92,6 +95,6 @@ class RequiredLabel(QHBoxLayout):
     def __init__(self, text: str):
         super().__init__()
         self.setSpacing(2)
-        self.addWidget(Label(text=text, name="bold"))
-        self.addWidget(Label(text="*", name="required"))
+        self.addWidget(Label(text=text, objectName="bold"))
+        self.addWidget(Label(text="*", objectName="required"))
         self.addStretch()

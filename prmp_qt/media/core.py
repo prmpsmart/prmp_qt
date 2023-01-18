@@ -4,6 +4,7 @@ site.addsitedir(r"C:\Users\Administrator\Desktop\GITHUB_PROJECTS\audiowave\audio
 
 try:
     from audiowavelive import *
+
     AUDIOWAVE = True
 except:
     AUDIOWAVE = False

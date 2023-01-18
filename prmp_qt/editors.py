@@ -16,7 +16,9 @@ class Labeled(VFrame):
         lay.setSpacing(2)
 
         label = (
-            RequiredLabel(text=label) if required else Label(text=label, name="bold")
+            RequiredLabel(text=label)
+            if required
+            else Label(text=label, objectName="bold")
         )
 
         if required:
@@ -36,11 +38,11 @@ class Labeled(VFrame):
 
 
 class LineEdit(QLineEdit):
-    def __init__(self, name: str = "", placehoder: str = ""):
+    def __init__(self, objectName: str = "", placehoder: str = ""):
         super().__init__()
 
-        if name:
-            self.setObjectName(name)
+        if objectName:
+            self.setObjectName(objectName)
         if placehoder:
             self.setPlaceholderText(placehoder)
 

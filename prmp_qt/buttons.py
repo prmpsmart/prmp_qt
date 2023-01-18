@@ -11,7 +11,7 @@ class Button(QPushButton):
         text: str = "",
         icon: Union[QIcon, str] = None,
         icon_size: int = 0,
-        name: str = "",
+        objectName: str = "",
         iconColor: QColor = Qt.black,
         composition: SvgCompositions = SvgCompositions.SourceIn,
         direction: Qt.LayoutDirection = Qt.LeftToRight,
@@ -29,8 +29,8 @@ class Button(QPushButton):
             self.setIconSize(QSize(icon_size, icon_size))
         if clickable:
             self.setCursor(Qt.PointingHandCursor)
-        if name:
-            self.setObjectName(name)
+        if objectName:
+            self.setObjectName(objectName)
         self.setLayoutDirection(direction)
         self.setCheckable(togglable)
 
@@ -81,7 +81,7 @@ class IconButton(Button, Icon):
         icon_size: int,
         parent: QWidget = None,
         border=True,
-        name: str = "",
+        objectName: str = "",
         color: QColor = Qt.black,
         clickable: bool = True,
     ):
@@ -90,7 +90,7 @@ class IconButton(Button, Icon):
             parent,
             icon=icon,
             icon_size=icon_size,
-            name=name,
+            objectName=objectName,
             iconColor=color,
             clickable=clickable,
         )
@@ -103,7 +103,6 @@ class IconTextButton(Button):
 
 class RaisedIconTextButton(IconTextButton):
     ...
-
 
 
 class Switch(QAbstractButton):
@@ -210,7 +209,7 @@ class Switch(QAbstractButton):
         super().resizeEvent(event)
         self.update()
 
-    def paintEvent(self, event):  # pylint: disable=invalid-name, unused-argument
+    def paintEvent(self, _):
         p = QPainter(self)
         p.setRenderHint(QPainter.Antialiasing, True)
         p.setPen(Qt.NoPen)
@@ -267,7 +266,7 @@ class Switch(QAbstractButton):
             self._thumb_text[self.isChecked()],
         )
 
-    def mouseReleaseEvent(self, event):  # pylint: disable=invalid-name
+    def mouseReleaseEvent(self, event: QMoveEvent):
         super().mouseReleaseEvent(event)
         if event.button() == Qt.LeftButton:
             anim = QPropertyAnimation(self, b"offset", self)
@@ -276,6 +275,6 @@ class Switch(QAbstractButton):
             anim.setEndValue(self.next_offset)
             anim.start()
 
-    def enterEvent(self, event):  # pylint: disable=invalid-name
+    def enterEvent(self, event: QEnterEvent):
         self.setCursor(Qt.PointingHandCursor)
         super().enterEvent(event)

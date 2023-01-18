@@ -2,10 +2,10 @@ from .commons import *
 
 
 class Frame(QFrame):
-    def __init__(self, name: str = "", parent: QWidget = None):
+    def __init__(self, objectName: str = "", parent: QWidget = None):
         super().__init__(parent)
-        if name:
-            self.setObjectName(name)
+        if objectName:
+            self.setObjectName(objectName)
 
 
 class VFrame(Frame):
@@ -47,8 +47,8 @@ class HLine(Frame):
         self.setFrameShape(self.HLine)
 
 
-def addHLine(lay, w=0, h=0, name=""):
+def addHLine(lay, w=0, h=0, objectName=""):
     vlay = QVBoxLayout()
     lay.addLayout(vlay)
-    vlay.addWidget(HLine(name=name))
+    vlay.addWidget(HLine(objectName=objectName))
     vlay.setContentsMargins(w, h, w, h)

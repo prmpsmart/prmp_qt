@@ -31,16 +31,12 @@ COMPOSITION_MODES = [
 COUNT = 0
 SIZE = 30
 
+
 class Icon(QPushButton):
     def __init__(self, icon: str, icon_func=None):
-        super().__init__(
-            COMPOSITION_MODES[COUNT]
-            .name
-            if icon_func
-            else ""
-        )
+        super().__init__(COMPOSITION_MODES[COUNT].name if icon_func else "")
 
-        icon = icon_func(icon,color=COLOR) if icon_func else QIcon(icon)
+        icon = icon_func(icon, color=COLOR) if icon_func else QIcon(icon)
         self.setIcon(icon)
         self.setIconSize(QSize(SIZE, SIZE))
 
