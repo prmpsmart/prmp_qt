@@ -38,13 +38,13 @@ class Labeled(VFrame):
 
 
 class LineEdit(QLineEdit):
-    def __init__(self, objectName: str = "", placehoder: str = ""):
+    def __init__(self, objectName: str = "", placeholder: str = ""):
         super().__init__()
 
         if objectName:
             self.setObjectName(objectName)
-        if placehoder:
-            self.setPlaceholderText(placehoder)
+        if placeholder:
+            self.setPlaceholderText(placeholder)
 
 
 class LabeledEdit(Labeled):
@@ -114,8 +114,15 @@ class TextInput(QTextEdit):
         h = br.height()
         hh = abs(h)
 
+        pm = 0
+        if p := self.parent():
+            if l:=p.layout():
+                if isinstance(l, QBoxLayout):
+                    cm = l.contentsMargins()
+                    pm += cm.top() + cm.bottom()
+
         if hh < self.min_height:
-            hh = self.min_height
+            hh = self.min_height + pm
         elif hh > self.max_height:
             hh = self.max_height
 

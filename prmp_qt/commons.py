@@ -24,6 +24,8 @@ class Expandable:
         self.max_width = max_width
 
         self.animation_group = QParallelAnimationGroup(self)
+        self.animation_group.finished.connect(self.finished)
+        
         self.__anim_group: list[QPropertyAnimation] = []
 
         for prop in [b"minimumWidth", b"maximumWidth"]:
@@ -46,20 +48,23 @@ class Expandable:
             anim.setEndValue(self.min_width if self.expanded else self.max_width)
         self.animation_group.start()
         self.expanded = not self.expanded
+    
+    def finished(self):
+        ...
 
 
 class Icon:
-    def __init__(self: QWidget, icon_size: int, border=True, color_str: str = "black"):
-        self.icon_size = icon_size
+    def __init__(self: QWidget, iconSize: int, border=True, color_str: str = "black"):
+        self.iconSize = iconSize
 
         self.setStyleSheet(
             f"""
             border: {int(border)}px solid {color_str};
-            min-height: {icon_size}px;
-            max-height: {icon_size}px;
-            min-width: {icon_size}px;
-            max-width: {icon_size}px;
-            border-radius: {icon_size/2}px;
+            min-height: {iconSize}px;
+            max-height: {iconSize}px;
+            min-width: {iconSize}px;
+            max-width: {iconSize}px;
+            border-radius: {iconSize/2}px;
             border-radius: 5px;
             padding: 2px;
             """

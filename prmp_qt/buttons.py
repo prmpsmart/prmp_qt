@@ -10,13 +10,15 @@ class Button(QPushButton):
         self,
         text: str = "",
         icon: Union[QIcon, str] = None,
-        icon_size: int = 0,
+        iconSize: int = 0,
         objectName: str = "",
+        tip: str = "",
         iconColor: QColor = Qt.black,
         composition: SvgCompositions = SvgCompositions.SourceIn,
         direction: Qt.LayoutDirection = Qt.LeftToRight,
         clickable: bool = True,
-        togglable: bool = False,
+        checkable: bool = False,
+        radio: bool = False,
     ):
         super().__init__()
 
@@ -25,14 +27,18 @@ class Button(QPushButton):
             self.setText(text)
         if icon:
             self.setIcon(icon, iconColor, composition)
-        if icon_size:
-            self.setIconSize(QSize(icon_size, icon_size))
+        if iconSize:
+            self.setIconSize(QSize(iconSize, iconSize))
         if clickable:
             self.setCursor(Qt.PointingHandCursor)
         if objectName:
             self.setObjectName(objectName)
+        if tip:
+            self.setToolTip(tip)
+        if radio:
+            self.setAutoExclusive(True)
         self.setLayoutDirection(direction)
-        self.setCheckable(togglable)
+        self.setCheckable(checkable)
 
     def setIcon(
         self,
@@ -78,7 +84,7 @@ class IconButton(Button, Icon):
     def __init__(
         self,
         icon: str,
-        icon_size: int,
+        iconSize: int,
         parent: QWidget = None,
         border=True,
         objectName: str = "",
@@ -89,12 +95,12 @@ class IconButton(Button, Icon):
             self,
             parent,
             icon=icon,
-            icon_size=icon_size,
+            iconSize=iconSize,
             objectName=objectName,
             iconColor=color,
             clickable=clickable,
         )
-        Icon.__init__(self, icon_size, border=border)
+        Icon.__init__(self, iconSize, border=border)
 
 
 class IconTextButton(Button):
@@ -114,10 +120,14 @@ class Switch(QAbstractButton):
         thumb_offset=4,
         useOffset=True,
         text_margin=4,
+        trueText:str='',
+        falseText:str='',
+        minWidth: int=20,
+        minHeight: int=20,
     ):
         super().__init__(parent=parent)
         self.setCheckable(True)
-        self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.setMinimumSize(minWidth, minHeight)
 
         self.text_margin = text_margin
         self._track_radius = track_radius
@@ -159,12 +169,8 @@ class Switch(QAbstractButton):
                 False: palette.dark().color(),
             }
             self._thumb_text = {
-                True: "✔",
-                False: "✕",
-            }
-            self._thumb_text = {
-                True: "1",
-                False: "0",
+                True: trueText,
+                False: falseText,
             }
             self._track_opacity = 1
 
@@ -278,3 +284,18 @@ class Switch(QAbstractButton):
     def enterEvent(self, event: QEnterEvent):
         self.setCursor(Qt.PointingHandCursor)
         super().enterEvent(event)
+
+
+class AvatarButton(Button):
+    def __init__(
+        self, avatar: str = "", iconSize: int = 60, mask:int=50, icon:str='', iconColor:QColor=None,composition: SvgCompositions = SvgCompositions.SourceIn, **kwargs
+    ):
+        super().__init__(iconSize=iconSize, **kwargs)
+        self._icon = icon
+        self._mask = mask
+        
+        self.setAvatar(avatar, iconColor, composition)
+
+    def setAvatar(self, avatar: str, iconColor: QColor=None, composition: SvgCompositions = SvgCompositions.SourceIn):
+        icon = ICON(avatar, self._icon, mask=self._mask) if avatar else self._icon
+        self.setIcon(icon, iconColor, composition)

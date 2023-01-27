@@ -25,7 +25,7 @@ class ImageLabel(Label):
         self.default = default
         self.setScaledContents(True)
 
-        if default and (pixmap or image):
+        if default:
             self.setImage(pixmap, image)
 
     def setImage(
@@ -35,8 +35,7 @@ class ImageLabel(Label):
         image_data: str = "",
     ):
 
-        if image_data:
-            pixmap = PIXMAP(image_data, self.default, round=self.radius)
+        pixmap = PIXMAP(image_data, self.default, round=self.radius)
 
         if self.radius:
             image = ROUND_IMAGE(image or pixmap.toImage(), self.radius, self.rect())
